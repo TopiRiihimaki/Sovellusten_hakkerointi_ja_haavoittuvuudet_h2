@@ -94,6 +94,47 @@ Testasin korjauksen uudelleen samalla injektiolla, jolla haavoittuvuutta aiemmin
 
 
 
+  # c) Solve dirfuzt-1 
+
+  Tein pitkälti, mitä materiaalin esimerkki tapauksessa (https://terokarvinen.com/2023/fuzz-urls-find-hidden-directories/) Eli asenssin ffuf, latasin sanakirjaston komennolla.
+'''
+wget https://raw.githubusercontent.com/danielmiessler/SecLists/master/Discovery/Web-Content/common.txt
+'''
+Josta sain tuon common.txt tiedoston:
+
+<img width="692" height="68" alt="image" src="https://github.com/user-attachments/assets/2d4d8e20-3a8f-4a4d-bcb7-dedbb277ff25" />
+
   
+Latasin tuon dirfuzt-1. Tiedosto ei tullut execute muodossa niin annoin tiedostolle ne:
+  '''
+  chmod +x dirfuzt-1
+  '''
+  Jonka jälkeen ajoin sen
+  '''
+  ./dirfuzt-1
+  '''
+  Se loi http-portaalin joka näytti tältä:
+  <img width="616" height="139" alt="image" src="https://github.com/user-attachments/assets/fafca494-f5e9-43d1-a2af-f9a71bcf0b96" />
+
+  ### ffuf
+
+Ajoin ohjeiden mukaisesti tuon ffuf ohjelman sanakirjastolla komennolla:
+'''
+ffuf -w common.txt -u http://127.0.0.2:8000/FUZZ
+'''
+Josta sain suuren määrän tuloksia. Huomasin kuitenkin, että kaikissa oli sama size, joka oli 154
+
+<img width="850" height="82" alt="image" src="https://github.com/user-attachments/assets/1f05ce11-1104-41e4-a404-e1d33a7c5f29" />
+
+Päätin kokeilla, että jätetään kaikki joiden koko on 154 niin pois laittamalla komennon perään vielä -fs 154, josta sain:
+
+<img width="861" height="106" alt="image" src="https://github.com/user-attachments/assets/e46c0d78-d057-46e0-91a3-22d51f9eaecd" />
+
+Katoin mitä tuolla .git löyty ja löysin tämän:
+
+<img width="478" height="183" alt="image" src="https://github.com/user-attachments/assets/1f811752-6208-4bf2-981d-32091918177c" />
+
+
+
 
 
