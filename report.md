@@ -134,6 +134,9 @@ Katoin mitä tuolla .git löyty ja löysin tämän:
 
 <img width="478" height="183" alt="image" src="https://github.com/user-attachments/assets/1f811752-6208-4bf2-981d-32091918177c" />
 
+# d) Break into 020-your-eyes-only
+
+
 
 
 
