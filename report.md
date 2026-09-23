@@ -136,6 +136,31 @@ Katoin mitä tuolla .git löyty ja löysin tämän:
 
 # d) Break into 020-your-eyes-only
 
+Katsoin ffuf avulla, että löytyykö joitakin URL päätteitä. Löysin /admin-console/. Menin sinne, mutta se vaatii sisäänkirjautumisen. Kokeilin hakea laajennettua ffuf hakua jossa oli 30k hakua, mutta mitään uutta ei tullut. Kokeilin sitten rekistöröityä ihan normi käyttäjänä ja sen jälkeen laittaa tuon /admin-console/ suoraan URL-kenttään. Pääsin sitten tänne:
+
+<img width="586" height="232" alt="image" src="https://github.com/user-attachments/assets/f341db04-675f-4448-852c-64ea07ee5ec6" />
+
+# e) Fix the 020-your-eyes-only vulnerability
+Koodissa oli näin
+'''
+class AdminShowAllView(UserPassesTestMixin, TemplateView):
+    template_name = "hats/admin-show-all.html"
+
+    def test_func(self):
+        return self.request.user.is_authenticated
+'''
+Tämä mahdollisti, että sivulle pääsi suoraan normikäyttäjällä.
+
+Laittamalla tuon def test_func(self): loppuun vielä and self.request.user.is_staff, niin nyt sinne ei enään pääse, ilman että koodi katsoo onko käyttäjä osa henkilökuntaa. 
+
+Nyt se näyttää tältä:
+'''
+class AdminShowAllView(UserPassesTestMixin, TemplateView):
+    template_name = "hats/admin-show-all.html"
+
+    def test_func(self):
+        return self.request.user.is_authenticated and self.request.user.is_staff
+'''
 
 
 
